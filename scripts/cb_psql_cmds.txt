@@ -1,0 +1,32 @@
+create table gc_content (
+tid text primary key,
+gc real); 
+
+create table kallisto (
+tid text primary key,
+length integer,
+eff_length real,
+est_count real,
+tpm real
+);
+
+create table rsem (
+tid text primary key,
+gene_id text,
+length integer,
+eff_length real,
+est_count real,
+tpm real,
+fpkm real,
+isopct real
+);
+
+COPY gc_content FROM '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/gc_content.csv' DELIMITER ',' CSV;
+
+copy kallisto from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/kallisto/abundance.tsv';
+
+copy rsem from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/rsem/rsem.new.quant.isoforms.results';
+
+COPY (select source, destination from netdata where protocol = 'ICMP') to '/Users/rhp/Documents/icmp_edges.csv' with csv header;
+
+COPY (select source, destination from netdata where source like '192%' or destination like '192%') to '/Users/rhp/Documents/192_edges.csv' with csv header;
