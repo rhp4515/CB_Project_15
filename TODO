@@ -1,0 +1,20 @@
+Notes after meeting with Hirak:
+calculate gc content for each gene in .fa file -> done
+
+gene names from ucsc db (tsv)
+
+transcript name to gene name mapping
+
+scatterplot between truth table and other abundance estimates
+TPM vs TPM -> correlation plot
+
+sra ncbi
+
+rapmap paper 
+
+ncbi geo accession number
+
+geo accession db - to query SRR number -> not possible
+
+
+1st step : Upload to db -> partially done
