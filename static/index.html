@@ -143,7 +143,13 @@
                     </div>
                     </br>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
+                        <div id="chartHours"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
                             <div class="card">
                                 <!-- <div class="header">
                                     <h4 class="title">Email Statistics</h4>
@@ -151,92 +157,9 @@
                                 </div> -->
                                 <div class="content">                                
                                     <div id="chartPreferences"></div>
-                                    
-                                    <div class="footer">
-                                        <!-- <div class="legend">
-                                            <i class="fa fa-circle text-info"></i> Open
-                                            <i class="fa fa-circle text-danger"></i> Bounce
-                                            <i class="fa fa-circle text-warning"></i> Unsubscribe
-                                        </div> -->
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-clock-o"></i> Meta information
-                                        </div>                                    
-                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-6">
-                            <div class="card">
-                                <!-- <div class="header">
-                                    <h4 class="title">Users Behavior</h4>
-                                    <p class="category">24 Hours performance</p>
-                                </div> -->
-                                <div class="content">
-                                    <div id="chartHours"></div>
-                                    <div class="footer">
-                                        <!-- <div class="legend">
-                                            <i class="fa fa-circle text-info"></i> Open
-                                            <i class="fa fa-circle text-danger"></i> Click
-                                            <i class="fa fa-circle text-warning"></i> Click Second Time
-                                        </div> -->
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-history"></i> Meta information
-                                        </div>                                    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                   
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <!-- <div class="header">
-                                    <h4 class="title">Email Statistics</h4>
-                                    <p class="category">Last Campaign Performance</p>
-                                </div> -->
-                                <div class="content">                                
-                                    <div id="chartPreferences1"></div>
-                                    
-                                    <div class="footer">
-                                        <!-- <div class="legend">
-                                            <i class="fa fa-circle text-info"></i> Open
-                                            <i class="fa fa-circle text-danger"></i> Bounce
-                                            <i class="fa fa-circle text-warning"></i> Unsubscribe
-                                        </div> -->
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-clock-o"></i> Meta information
-                                        </div>                                    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card">
-                                <!-- <div class="header">
-                                    <h4 class="title">Users Behavior</h4>
-                                    <p class="category">24 Hours performance</p>
-                                </div> -->
-                                <div class="content">
-                                    <div id="chartHours1"></div>
-                                    <div class="footer">
-                                        <!-- <div class="legend">
-                                            <i class="fa fa-circle text-info"></i> Open
-                                            <i class="fa fa-circle text-danger"></i> Click
-                                            <i class="fa fa-circle text-warning"></i> Click Second Time
-                                        </div> -->
-                                        <hr>
-                                        <div class="stats">
-                                            <i class="fa fa-history"></i> Meta information
-                                        </div>                                    
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                   
                     </div>
                 </div>    
             </div>    
@@ -261,13 +184,12 @@
     
     <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
 	<script src="/static/assets/js/light-bootstrap-dashboard.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
 
-    <script src="/static/highcharts-4.1.9/js/highcharts.js"></script>
-    <script src="/static/highcharts-4.1.9/js/highcharts-more.js"></script>
-    <script src="/static/highcharts-4.1.9/js/modules/exporting.js"></script>
 	
 	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-	<script src="/static/assets/js/demo.js"></script>
+	<script src="/static/assets/js/chart.js"></script>
 	
 	<script type="text/javascript">
     	$(document).ready(function(){
