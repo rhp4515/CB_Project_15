@@ -252,12 +252,7 @@ demo = {
               }
           });
   	},
-    syncChart: function () {
-
-    /**
-     * In order to synchronize tooltips and crosshairs, override the
-     * built-in events with handlers defined on the parent element.
-     */
+    initSyncChart: function () {
     $('#syncCharts').bind('mousemove touchmove', function (e) {
         var chart,
             point,
