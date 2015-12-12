@@ -38,7 +38,7 @@ def get_kallisto_metrics(table_name):
 		gcTPM = []
 		lenTPM = []
 		for metric in metrics:
-			gc = {'id':metric[0],'x': metric[2],'y':metric[3]}
+			gc = {'id':metric[0],'x':metric[3], 'y': metric[2]}
 			length = {'id':metric[0],'x': metric[1],'y':metric[2]}
 			gcTPM.append(gc)
 			lenTPM.append(length)

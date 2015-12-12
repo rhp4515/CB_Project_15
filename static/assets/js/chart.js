@@ -57,7 +57,7 @@ chart = {
                 },
                 tooltip: {
                     headerFormat: '{point.id}',
-                    pointFormat: '<b>{point.id}</b><br>GC: {point.x},TPM: {point.y}'
+                    pointFormat: '<b>{point.id}</b><br>TPM: {point.y}, GC: {point.x}'
                 }
             }
         },
@@ -125,7 +125,7 @@ chart = {
                 },
                 tooltip: {
                     headerFormat: '{point.id}',
-                    pointFormat: '<b>{point.id}</b><br>ReadLength: {point.x},TPM: {point.y}'
+                    pointFormat: '<b>{point.id}</b><br>TPM: {point.y}, Read Length: {point.x}'
                 }
             }
         },

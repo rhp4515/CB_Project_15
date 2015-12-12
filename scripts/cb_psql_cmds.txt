@@ -1,4 +1,4 @@
-psql --host=cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com --port=5432 --username=postgres --password
+PGPASSWORD=forgotpassword psql --host=cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com --port=5432 --dbname=cb15rna --username=postgres --password
 <password> => forgotpassword
 
 create table gc_content (
@@ -50,13 +50,13 @@ cv real
 
 copy gc_content FROM '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/gc_content.csv' DELIMITER ',' CSV;
 
-copy kallisto from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/kallisto/abundance.tsv';
+\copy kallisto from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/kallisto/abundance.tsv';
 
-copy rsem from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/rsem/rsem.new.quant.isoforms.results';
+\copy rsem from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/rsem/rsem.new.quant.isoforms.results';
 
-copy sailfish from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/sailfish/quant.sf';
+\copy sailfish from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/sailfish/quant.sf';
 
-copy truth from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/truth/config.pro';
+\copy truth from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/truth/config.pro';
 
 COPY (select source, destination from netdata where protocol = 'ICMP') to '/Users/rhp/Documents/icmp_edges.csv' with csv header;
 
