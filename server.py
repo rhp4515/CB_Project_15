@@ -27,11 +27,11 @@ def users():
 									]
 	return json.dumps(usr_obj)
 
-def get_corr_metrics(table_name):
+def get_corr_metrics(table_name, offset):
 	try:
 		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
 		cur = conn.cursor()
-		cur.execute("select t.tid, t.exp_frac, g.tpm_norm from "+table_name+ " g, truth t where t.tid=g.tid limit 1000")
+		cur.execute("select t.tid, t.exp_frac, g.tpm_norm from "+table_name+ " g, truth t where t.tid=g.tid order by t.tid limit 100 offset "+offset)
 		metrics = cur.fetchall()
 		cur.close()
 		conn.close()
@@ -91,9 +91,9 @@ def metrics():
 	offset = request.args.get('offset')
 	metrics = {}
 
-	metrics['kallisto_corr'] = get_corr_metrics('kallisto')
-	metrics['rsem_corr'] = get_corr_metrics('rsem')
-	metrics['sailfish_corr'] = get_corr_metrics('sailfish')
+	metrics['kallisto_corr'] = get_corr_metrics('kallisto', offset)
+	metrics['rsem_corr'] = get_corr_metrics('rsem', offset)
+	metrics['sailfish_corr'] = get_corr_metrics('sailfish', offset)
 	metrics['kallisto'] = get_metrics('kallisto', offset)
 	metrics['rsem'] = get_metrics('rsem', offset)
 	metrics['sailfish'] = get_metrics('sailfish', offset)
