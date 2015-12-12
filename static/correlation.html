@@ -44,13 +44,19 @@
             </div>
                        
             <ul class="nav">
-                <li>
+                <li class="active">
                     <a href="/static/index.html">
                         <i class="pe-7s-graph"></i> 
                         <p>Dashboard</p>
                     </a>            
                 </li>
-                <li class="active">
+                <li>
+                    <a href="/static/correlation.html">
+                        <i class="pe-7s-graph"></i> 
+                        <p>Correlation Dash</p>
+                    </a>            
+                </li>
+                <li>
                     <a href="/static/sync.html">
                         <i class="pe-7s-graph"></i> 
                         <p>Synchronous Graph</p>
@@ -65,23 +71,41 @@
             </ul> 
         </div>
     </div>
-       <div class="row">
-                        <div class="col-md-8">
+        <div class="main-panel">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-2 col-lg-offset-8">
+                            <input id="offset" type="text" class="form-control" placeholder="From" aria-describedby="basic-addon1" value="0">
+                        </div>
+                        <div class="dropdown col-lg-2">
+                          <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" onclick="getData();">Plot 100 Entries</button>
+                          </span>
+                        </div>
+
+                    </div>
+                    </br>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div id="kallisto_expFracVsTpm"></div>
                         </div>
                     </div>
                     </br>
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div id="rsem_expFracVsTpm"></div>
                         </div>
                     </div>
                     </br>
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div id="sailfish_expFracVsTpm"></div>
                         </div>
                     </div>
+                </div>    
+            </div>    
+        </div>
 </div>
 
 
@@ -124,7 +148,8 @@
             // var searchTerm = document.getElementById('search').value;
             var searchTerm = 1
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/metrics?id=1", true);
+            var offset = document.getElementById("offset").value;
+            xhttp.open("GET", "/metrics?offset="+offset, true);
             xhttp.onreadystatechange = function() {
               if (xhttp.readyState == 4 && xhttp.status == 200) {
                 if(xhttp.responseText != "") {
