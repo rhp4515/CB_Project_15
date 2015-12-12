@@ -27,6 +27,27 @@ def users():
 									]
 	return json.dumps(usr_obj)
 
+
+
+def get_corr_metrics(table_name):
+	try:
+		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
+		cur = conn.cursor()
+		cur.execute("select t.tid, t.exp_frac, g.tpm_norm from "+table_name+ " g, truth t where t.tid=g.tid limit 1000")
+		metrics = cur.fetchall()
+		cur.close()
+		conn.close()
+		metricDict = {}
+		corr_list = []
+		for metric in metrics:
+			corr = {'id':metric[0],'x':metric[1], 'y': metric[2]}
+			corr_list.append(corr)
+
+		metricDict['corr'] = corr_list
+		return metricDict
+	except:  
+		traceback.print_exc()
+
 def get_kallisto_metrics(table_name):
 	try:
 		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
@@ -34,6 +55,7 @@ def get_kallisto_metrics(table_name):
 		cur.execute("select t.tid, t.length, t.tpm, g.gc from "+table_name+ " t, gc_content g where t.tid=g.tid and t.tpm > 0 limit 1000")
 		metrics = cur.fetchall()
 		cur.close()
+		conn.close()
 		metricDict = {}
 		gcTPM = []
 		lenTPM = []
@@ -55,6 +77,10 @@ def metrics():
 	metrics['kallisto'] = get_kallisto_metrics('kallisto')
 	metrics['rsem'] = get_kallisto_metrics('rsem')
 	metrics['sailfish'] = get_kallisto_metrics('sailfish')
+
+	metrics['kallisto_corr'] = get_corr_metrics('kallisto')
+	metrics['rsem_corr'] = get_corr_metrics('rsem')
+	metrics['sailfish_corr'] = get_corr_metrics('sailfish')
 	return json.dumps(metrics)
 
 @app.route('/')
