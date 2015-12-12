@@ -249,66 +249,7 @@ chart = {
           });
       });
     },
-    showNotification: function(from, align){
-        color = Math.floor((Math.random() * 4) + 1);
-        
-        $.notify({
-            icon: "pe-7s-gift",
-            message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer."
-            
-          },{
-              type: type[color],
-              timer: 4000,
-              placement: {
-                  from: from,
-                  align: align
-              }
-          });
-    },
     initSyncChart: function () {
-    $('#syncCharts').bind('mousemove touchmove', function (e) {
-        var chart,
-            point,
-            i;
-
-        for (i = 0; i < Highcharts.charts.length; i = i + 1) {
-            chart = Highcharts.charts[i];
-            e = chart.pointer.normalize(e); // Find coordinates within the chart
-            point = chart.series[0].searchPoint(e, true); // Get the hovered point
-
-            if (point) {
-                point.onMouseOver(); // Show the hover marker
-                chart.tooltip.refresh(point); // Show the tooltip
-                chart.xAxis[0].drawCrosshair(e, point); // Show the crosshair
-            }
-        }
-    });
-    /**
-     * Override the reset function, we don't need to hide the tooltips and crosshairs.
-     */
-    Highcharts.Pointer.prototype.reset = function () {
-        return undefined;
-    };
-
-    /**
-     * Synchronize zooming through the setExtremes event handler.
-     */
-    function syncExtremes(e) {
-        var thisChart = this.chart;
-
-        if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
-            Highcharts.each(Highcharts.charts, function (chart) {
-                if (chart !== thisChart) {
-                    if (chart.xAxis[0].setExtremes) { // It is null while updating
-                        chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
-                    }
-                }
-            });
-        }
-    }
-
-    // Get the data. The contents of the data file can be viewed at
-    // https://github.com/highslide-software/highcharts.com/blob/master/samples/data/activity.json
     $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=activity.json&callback=?', function (activity) {
         $.each(activity.datasets, function (i, dataset) {
 
@@ -324,7 +265,8 @@ chart = {
                         marginLeft: 40, // Keep all charts left aligned
                         spacingTop: 20,
                         spacingBottom: 20,
-                        zoomType: 'x'
+                        zoomType: 'x',
+                        type: 'spline'
                     },
                     title: {
                         text: dataset.name,
@@ -339,47 +281,99 @@ chart = {
                         enabled: false
                     },
                     xAxis: {
-                        crosshair: true,
-                        events: {
-                            setExtremes: syncExtremes
+                        type: 'datetime',
+                        dateTimeLabelFormats: { // don't display the dummy year
+                            month: '%e. %b',
+                            year: '%b'
                         },
-                        labels: {
-                            format: '{value} km'
-                        }
                     },
                     yAxis: {
                         title: {
-                            text: null
+                            text: 'Snow depth (m)'
+                        },
+                        min: 0
+                    },
+                    plotOptions: {
+                      spline: {
+                            marker: {
+                                enabled: true
+                            }
                         }
                     },
-                    tooltip: {
-                        positioner: function () {
-                            return {
-                                x: this.chart.chartWidth - this.label.width, // right aligned
-                                y: -1 // align to title
-                            };
-                        },
-                        borderWidth: 0,
-                        backgroundColor: 'none',
-                        pointFormat: '{point.y}',
-                        headerFormat: '',
-                        shadow: false,
-                        style: {
-                            fontSize: '18px'
-                        },
-                        valueDecimals: dataset.valueDecimals
-                    },
                     series: [{
-                        data: dataset.data,
+                        data: [
+                [Date.UTC(1970, 9, 21), 0],
+                [Date.UTC(1970, 10, 4), 0.28],
+                [Date.UTC(1970, 10, 9), 0.25],
+                [Date.UTC(1970, 10, 27), 0.2],
+                [Date.UTC(1970, 11, 2), 0.28],
+                [Date.UTC(1970, 11, 26), 0.28],
+                [Date.UTC(1970, 11, 29), 0.47],
+                [Date.UTC(1971, 0, 11), 0.79],
+                [Date.UTC(1971, 0, 26), 0.72],
+                [Date.UTC(1971, 1, 3), 1.02],
+                [Date.UTC(1971, 1, 11), 1.12],
+                [Date.UTC(1971, 1, 25), 1.2],
+                [Date.UTC(1971, 2, 11), 1.18],
+                [Date.UTC(1971, 3, 11), 1.19],
+                [Date.UTC(1971, 4, 1), 1.85],
+                [Date.UTC(1971, 4, 5), 2.22],
+                [Date.UTC(1971, 4, 19), 1.15],
+                [Date.UTC(1971, 5, 3), 0]
+            ]
+        }, {
+            name: 'Winter 2013-2014',
+            data: [
+                [Date.UTC(1970, 9, 29), 0],
+                [Date.UTC(1970, 10, 9), 0.4],
+                [Date.UTC(1970, 11, 1), 0.25],
+                [Date.UTC(1971, 0, 1), 1.66],
+                [Date.UTC(1971, 0, 10), 1.8],
+                [Date.UTC(1971, 1, 19), 1.76],
+                [Date.UTC(1971, 2, 25), 2.62],
+                [Date.UTC(1971, 3, 19), 2.41],
+                [Date.UTC(1971, 3, 30), 2.05],
+                [Date.UTC(1971, 4, 14), 1.7],
+                [Date.UTC(1971, 4, 24), 1.1],
+                [Date.UTC(1971, 5, 10), 0]
+            ]
+        }, {
+            name: 'Winter 2014-2015',
+            data: [
+                [Date.UTC(1970, 10, 25), 0],
+                [Date.UTC(1970, 11, 6), 0.25],
+                [Date.UTC(1970, 11, 20), 1.41],
+                [Date.UTC(1970, 11, 25), 1.64],
+                [Date.UTC(1971, 0, 4), 1.6],
+                [Date.UTC(1971, 0, 17), 2.55],
+                [Date.UTC(1971, 0, 24), 2.62],
+                [Date.UTC(1971, 1, 4), 2.5],
+                [Date.UTC(1971, 1, 14), 2.42],
+                [Date.UTC(1971, 2, 6), 2.74],
+                [Date.UTC(1971, 2, 14), 2.62],
+                [Date.UTC(1971, 2, 24), 2.6],
+                [Date.UTC(1971, 3, 2), 2.81],
+                [Date.UTC(1971, 3, 12), 2.63],
+                [Date.UTC(1971, 3, 28), 2.77],
+                [Date.UTC(1971, 4, 5), 2.68],
+                [Date.UTC(1971, 4, 10), 2.56],
+                [Date.UTC(1971, 4, 15), 2.39],
+                [Date.UTC(1971, 4, 20), 2.3],
+                [Date.UTC(1971, 5, 5), 2],
+                [Date.UTC(1971, 5, 10), 1.85],
+                [Date.UTC(1971, 5, 15), 1.49],
+                [Date.UTC(1971, 5, 23), 1.08]
+            ],
                         name: dataset.name,
                         type: dataset.type,
-                        color: Highcharts.getOptions().colors[i],
-                        fillOpacity: 0.3,
+                        // color: Highcharts.getOptions().colors[i],
+                        fillOpacity: 0.0,
                         tooltip: {
                             valueSuffix: ' ' + dataset.unit
                         }
                     }]
-                });
+                }
+        );
         });
     });
 }

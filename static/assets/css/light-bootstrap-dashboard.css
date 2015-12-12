@@ -54,9 +54,7 @@ button.close {
   font-weight: 400;
 }
 
-.chart {
-    min-width: 320px;
-    max-width: 1000px;
+.chart {    
     height: 250px;
     margin: 0 auto;
 }

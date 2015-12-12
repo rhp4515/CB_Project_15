@@ -47,7 +47,12 @@ chi_square real,
 cv real
 );
 
-
+create table differential(
+time timestamp,
+tid text,
+tpm real,
+attempt integer
+);
 copy gc_content FROM '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/gc_content.csv' DELIMITER ',' CSV;
 
 \copy kallisto from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/kallisto/abundance.tsv';
@@ -58,6 +63,10 @@ copy gc_content FROM '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/q
 
 \copy truth from '/Users/rhp/Documents/SBU/2ComputationalBio/CB_Project_15/quant_data/truth/config.pro';
 
+\copy (select * from differential) to '/Users/arvindram/CB_Project_15/diff.csv' delimiter ',' csv header;
+
 COPY (select source, destination from netdata where protocol = 'ICMP') to '/Users/rhp/Documents/icmp_edges.csv' with csv header;
 
 COPY (select source, destination from netdata where source like '192%' or destination like '192%') to '/Users/rhp/Documents/192_edges.csv' with csv header;
+
+\copy (select tid, exp_frac from diff) to '/Users/arvindram/CB_Project_15/diff.csv' DELIMITER ',' CSV;
