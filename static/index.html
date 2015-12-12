@@ -66,25 +66,6 @@
     	</div>
     </div>
         <div class="main-panel">
-            <nav class="navbar navbar-default navbar-fixed">
-                <div class="container-fluid">    
-                    <div class="collapse navbar-collapse">       
-                        <ul class="nav navbar-nav navbar-left">
-                            <li id="menu-toggle">
-                                <a href="/static/index.html" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-bars"></i>&nbsp;&nbsp;Menu
-                                </a>
-                            </li>
-                        </ul>
-                        
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-                         
-                         
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -143,22 +124,29 @@
                     </div>
                     </br>
                     <div class="row">
-                        <div class="col-md-12">
-                        <div id="chartHours"></div>
+                        <div class="col-md-6">
+                            <div id="kallisto_gcVsTpm"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="kallisto_lenVsTpm"></div>
                         </div>
                     </div>
+                    </br>
                     <div class="row">
-                        <div class="col-md-12">
-
-                            <div class="card">
-                                <!-- <div class="header">
-                                    <h4 class="title">Email Statistics</h4>
-                                    <p class="category">Last Campaign Performance</p>
-                                </div> -->
-                                <div class="content">                                
-                                    <div id="chartPreferences"></div>
-                                </div>
-                            </div>
+                        <div class="col-md-6">
+                            <div id="rsem_gcVsTpm"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="rsem_lenVsTpm"></div>
+                        </div>
+                    </div>
+                    </br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div id="sailfish_gcVsTpm"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="sailfish_lenVsTpm"></div>
                         </div>
                     </div>
                 </div>    
@@ -201,26 +189,21 @@
                 getData();
             }
         }
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-            setTimeout(function(){
-                getData();
-            }, 200);
-        });
         function getData() {
             // var searchTerm = document.getElementById('search').value;
             var searchTerm = 1
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/user?id="+searchTerm, true);
+            xhttp.open("GET", "/metrics?id=1", true);
             xhttp.onreadystatechange = function() {
               if (xhttp.readyState == 4 && xhttp.status == 200) {
                 if(xhttp.responseText != "") {
-                    setTimeout(function(){
-                        var obj = JSON.parse(xhttp.responseText);
-                        demo.initBoxPlot(obj.box);
-                        demo.initSparkline(obj.box);
-                    }, 100);
+                    var obj = JSON.parse(xhttp.responseText);
+                    chart.initScatterPlotForGcVsTpm("kallisto_gcVsTpm","Kallisto GC Content Vs TPM",obj.kallisto.gcTPM);
+                    chart.initScatterPlotForLenVsTpm("kallisto_lenVsTpm","Kallisto Length Vs TPM",obj.kallisto.lenTPM);
+                    chart.initScatterPlotForGcVsTpm("rsem_gcVsTpm","RSem GC Content Vs TPM",obj.rsem.gcTPM);
+                    chart.initScatterPlotForLenVsTpm("rsem_lenVsTpm","RSem Length Vs TPM",obj.rsem.lenTPM);
+                    chart.initScatterPlotForGcVsTpm("sailfish_gcVsTpm","Sailfish GC Content Vs TPM",obj.sailfish.gcTPM);
+                    chart.initScatterPlotForLenVsTpm("sailfish_lenVsTpm","Sailfish Length Vs TPM",obj.sailfish.lenTPM);
                 } else {
                 }
               }

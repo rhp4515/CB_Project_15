@@ -1,31 +1,143 @@
 type = ['','info','success','warning','danger'];
     	
 
-demo = {
-    initBoxPlot: function(box_data) {
-      //var obs_data = JSON.parse(box_data)
-        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
-          // Create the chart
-          $('#chartHours').highcharts('StockChart', {
-              rangeSelector : {
-                  selected : 1
-              },
-
-              title : {
-                  text : 'AAPL Stock Price'
-              },
-
-              series : [{
-                  name : 'AAPL',
-                  data : data,
-                  tooltip: {
-                      valueDecimals: 2
-                  }
-              }]
-          });
-      });
+chart = {
+    initScatterPlotForGcVsTpm: function(id, title, data) {
+      // alert(id);
+        $("#"+id).highcharts({
+        chart: {
+            type: 'scatter',
+            zoomType: 'xy'
+        },
+        title: {
+            text: title
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: 'GC Content'
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true
+        },
+        yAxis: {
+            title: {
+                text: 'TPM'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 100,
+            y: 70,
+            floating: true,
+            enabled:false,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+            borderWidth: 1
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 5,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '{point.id}',
+                    pointFormat: '<b>{point.id}</b><br>GC: {point.x},TPM: {point.y}'
+                }
+            }
+        },
+        credits: {
+                    enabled: false
+        },
+        series: [{
+            name: 'GC vs TPM',
+            color: 'rgba(119, 152, 191, .5)',
+            data: data}]
+    });
     },
-
+    initScatterPlotForLenVsTpm: function(id,title, data) {
+      // alert(id);
+        $("#"+id).highcharts({
+        chart: {
+            type: 'scatter',
+            zoomType: 'xy'
+        },
+        title: {
+            text: title
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: 'Length'
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true
+        },
+        yAxis: {
+            title: {
+                text: 'TPM'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 100,
+            y: 70,
+            floating: true,
+            enabled:false,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+            borderWidth: 1
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 5,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '{point.id}',
+                    pointFormat: '<b>{point.id}</b><br>ReadLength: {point.x},TPM: {point.y}'
+                }
+            }
+        },
+        credits: {
+                    enabled: false
+        },
+        series: [{
+            name: 'Length vs TPM',
+            color: 'rgba(223, 83, 83, .5)',
+            data: data }]
+    });
+    },
     initSparkline: function(sparkline_data) {
         $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
           // Create the chart

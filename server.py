@@ -2,6 +2,8 @@ from flask import Flask
 from flask import Flask, request, render_template
 import json
 import random
+import pg8000
+import sys, traceback
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -25,6 +27,35 @@ def users():
 									]
 	return json.dumps(usr_obj)
 
+def get_kallisto_metrics(table_name):
+	try:
+		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
+		cur = conn.cursor()
+		cur.execute("select t.tid, t.length, t.tpm, g.gc from "+table_name+ " t, gc_content g where t.tid=g.tid and t.tpm > 0 limit 1000")
+		metrics = cur.fetchall()
+		cur.close()
+		metricDict = {}
+		gcTPM = []
+		lenTPM = []
+		for metric in metrics:
+			gc = {'id':metric[0],'x': metric[2],'y':metric[3]}
+			length = {'id':metric[0],'x': metric[1],'y':metric[2]}
+			gcTPM.append(gc)
+			lenTPM.append(length)
+			
+		metricDict['gcTPM'] = gcTPM
+		metricDict['lenTPM'] = lenTPM	
+		return metricDict
+	except:  
+		traceback.print_exc()
+
+@app.route('/metrics')
+def metrics():
+	metrics = {}
+	metrics['kallisto'] = get_kallisto_metrics('kallisto')
+	metrics['rsem'] = get_kallisto_metrics('rsem')
+	metrics['sailfish'] = get_kallisto_metrics('sailfish')
+	return json.dumps(metrics)
 
 @app.route('/')
 def index():
