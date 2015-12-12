@@ -68,6 +68,21 @@
         <div class="main-panel">
             <div class="content">
                 <div class="container-fluid">
+                    <div class="row col-lg-4">
+                            <div class="button-group col-lg-2 ">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Transcripts
+                                <span class="caret"></span></button>
+                                <ul id="options" class="dropdown-menu"></ul>
+                            </div>  
+                            <div class="dropdown col-lg-2 col-lg-offset-3">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button" onclick="getData();">Plot</button>
+                                </span>
+                            </div>  
+                            </br>
+                    </div>
+                    </br>
+                    </br>
                     <div class="row">
                         <div id="syncCharts"></div>
                     </div>
@@ -95,15 +110,15 @@
     <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
     <script src="/static/assets/js/light-bootstrap-dashboard.js"></script>
 
-    <script src="/static/highcharts-4.1.9/js/highcharts.js"></script>
-    <script src="/static/highcharts-4.1.9/js/highcharts-more.js"></script>
-    <script src="/static/highcharts-4.1.9/js/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
     
     <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
     <script src="/static/assets/js/chart.js"></script>
     
     <script type="text/javascript">
         $(document).ready(function(){
+            getTids();
             getData();
             
         });
@@ -112,11 +127,38 @@
                 getData();
             }
         }
+        function getTids() {
+            // var searchTerm = document.getElementById('search').value;
+            var searchTerm = 1
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/tids", true);
+            xhttp.onreadystatechange = function() {
+              if (xhttp.readyState == 4 && xhttp.status == 200) {
+                if(xhttp.responseText != "") {
+                    var obj = JSON.parse(xhttp.responseText);
+                     for( i in obj.tids ) {
+                           $('#options').append('<li><a href="#" class="small" data-value="'+obj.tids[i]+'" tabIndex="-1"><input type="checkbox" name="tids" class="tidOptions" value="'+obj.tids[i]+'"/>&nbsp;'+obj.tids[i]+'</a></li>'); 
+                     }
+                } else {
+                }
+              }
+            };
+            xhttp.send();
+        }
         function getData() {
             // var searchTerm = document.getElementById('search').value;
             var searchTerm = 1
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/user?id="+searchTerm, true);
+            var tids = ""; 
+            var inputElements = document.getElementsByClassName('tidOptions');
+
+            for(var i=0; inputElements[i]; ++i){
+                  if(inputElements[i].checked){
+                    tids = tids + "tid="+inputElements[i].value+"&"
+                  }
+            }
+            
+            xhttp.open("GET", "/sync?"+tids, true);
             xhttp.onreadystatechange = function() {
               if (xhttp.readyState == 4 && xhttp.status == 200) {
                 if(xhttp.responseText != "") {

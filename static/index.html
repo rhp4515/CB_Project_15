@@ -69,55 +69,12 @@
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-2">
-                            <select class="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                            </select>
+                        <div class="col-lg-2 col-lg-offset-8">
+                            <input id="offset" type="text" class="form-control" placeholder="From" aria-describedby="basic-addon1" value="0">
                         </div>
-                        <div class="col-lg-2">
-                            <select class="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2">
-                            <select class="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2">
-                            <select class="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-2">
-                            <select class="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                            </select>
-                        </div>
-
                         <div class="dropdown col-lg-2">
                           <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button" onclick="getData();">Show Insights!</button>
+                                <button class="btn btn-primary" type="button" onclick="getData();">Plot 100 Entries</button>
                           </span>
                         </div>
 
@@ -193,7 +150,8 @@
             // var searchTerm = document.getElementById('search').value;
             var searchTerm = 1
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/metrics?id=1", true);
+            var offset = document.getElementById("offset").value;
+            xhttp.open("GET", "/metrics?offset="+offset, true);
             xhttp.onreadystatechange = function() {
               if (xhttp.readyState == 4 && xhttp.status == 200) {
                 if(xhttp.responseText != "") {
