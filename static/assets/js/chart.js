@@ -1,5 +1,5 @@
 type = ['','info','success','warning','danger'];
-    	
+        
 
 chart = {
     initScatterPlotForGcVsTpm: function(id, title, data) {
@@ -45,6 +45,13 @@ chart = {
                         hover: {
                             enabled: true,
                             lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                point: {
+                    events: {
+                        click: function (e) {
+                            window.open("http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t="+this.id,"_blank")
                         }
                     }
                 },
@@ -116,6 +123,13 @@ chart = {
                         }
                     }
                 },
+                point: {
+                    events: {
+                        click: function (e) {
+                            window.open("http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t="+this.id,"_blank")
+                        }
+                    }
+                },
                 states: {
                     hover: {
                         marker: {
@@ -136,6 +150,81 @@ chart = {
             name: 'Length vs TPM',
             color: 'rgba(223, 83, 83, .5)',
             data: data }]
+    });
+    },
+    initScatterPlotForExpFracVsTpm: function(id, title, data) {
+      // alert(id);
+        $("#"+id).highcharts({
+        chart: {
+            type: 'scatter',
+            zoomType: 'xy'
+        },
+        title: {
+            text: title
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: 'Normalized Expected Fraction'
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true
+        },
+        yAxis: {
+            title: {
+                text: 'Normalized TPM'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 100,
+            y: 70,
+            floating: true,
+            enabled:false,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+            borderWidth: 1
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 5,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                point: {
+                    events: {
+                        click: function (e) {
+                            window.open("http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t="+this.id,"_blank")
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '{point.id}',
+                    pointFormat: '<b>{point.id}</b><br>TPM: {point.y}, Truth: {point.x}'
+                }
+            }
+        },
+        credits: {
+                    enabled: false
+        },
+        series: [{
+            name: 'Truth TPM vs TPM',
+            color: 'rgba(119, 152, 191, .5)',
+            data: data}]
     });
     },
     initSparkline: function(sparkline_data) {
@@ -160,13 +249,13 @@ chart = {
           });
       });
     },
-  	showNotification: function(from, align){
-      	color = Math.floor((Math.random() * 4) + 1);
-      	
-      	$.notify({
-          	icon: "pe-7s-gift",
-          	message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer."
-          	
+    showNotification: function(from, align){
+        color = Math.floor((Math.random() * 4) + 1);
+        
+        $.notify({
+            icon: "pe-7s-gift",
+            message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer."
+            
           },{
               type: type[color],
               timer: 4000,
@@ -175,7 +264,7 @@ chart = {
                   align: align
               }
           });
-  	},
+    },
     initSyncChart: function () {
     $('#syncCharts').bind('mousemove touchmove', function (e) {
         var chart,
