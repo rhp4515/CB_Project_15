@@ -374,15 +374,20 @@ chart = {
                       spline: {
                             marker: {
                                 enabled: true
+                            },
+                            point: {
+                                events: {
+                                    click: function (e) {
+                                        window.open("http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t="+this.series.name,"_blank")
+                                    }
+                                }
                             }
                         }
                     },
                     series: series
                 }
-        );
-}
-}
-
-    
+            );
+        }
+    }    
 }
 
