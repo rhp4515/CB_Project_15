@@ -1,7 +1,19 @@
 type = ['','info','success','warning','danger'];
 
-containers = ['kallisto_gcVsTpm', 'kallisto_lenVsTpm', 'rsem_gcVsTpm', 'rsem_lenVsTpm', 'sailfish_gcVsTpm', 'sailfish_lenVsTpm']
-function onPointMouseOver(chartId, tid) {
+dashboard_containers = ['kallisto_gcVsTpm', 'kallisto_lenVsTpm', 'rsem_gcVsTpm', 'rsem_lenVsTpm', 'sailfish_gcVsTpm', 'sailfish_lenVsTpm'];
+corr_containers = ['kallisto_expFracVsTpm', 'rsem_expFracVsTpm', 'sailfish_expFracVsTpm'];
+
+function onPointMouseOver(chartId, tid, plotType) {
+    switch(plotType) {
+        case 0:
+        containers = dashboard_containers;
+        break;
+        case 1:
+        containers = corr_containers;
+        break;
+        default:
+        alert("Can't find graph containers");
+    }
     for (var c = 0; c < containers.length; c++) {
         if(containers[c] == chartId) {
             continue;
@@ -18,7 +30,17 @@ function onPointMouseOver(chartId, tid) {
     }
 }
 
-function onPointMouseOut() {
+function onPointMouseOut(plotType) {
+    switch(plotType) {
+        case 0:
+        containers = dashboard_containers;
+        break;
+        case 1:
+        containers = corr_containers;
+        break;
+        default:
+        alert("Can't find graph containers");
+    }
     for (var c = 0; c < containers.length; c++) {
         var chart = $('#'+containers[c]).highcharts();
         for (var i = 0; i < chart.series[0].data.length; i++) {
@@ -240,6 +262,12 @@ chart = {
                     events: {
                         click: function (e) {
                             window.open("http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t="+this.id,"_blank")
+                        },
+                        mouseOver: function (e) {
+                            onPointMouseOver(id, this.id, 1);
+                        },
+                        mouseOut: function (e) {
+                            onPointMouseOut(1);
                         }
                     }
                 },
