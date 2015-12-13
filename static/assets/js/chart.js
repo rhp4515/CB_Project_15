@@ -1,5 +1,30 @@
 type = ['','info','success','warning','danger'];
-        
+containers = ['kallisto_gcVsTpm', 'kallisto_lenVsTpm', 'rsem_gcVsTpm', 'rsem_lenVsTpm', 'sailfish_gcVsTpm', 'sailfish_lenVsTpm']
+function onPointMouseOver(chartId, tid) {
+    for (var c = 0; c < containers.length; c++) {
+        if(containers[c] == chartId) {
+            continue;
+        }
+        var chart = $('#'+containers[c]).highcharts();
+        for (var i = 0; i < chart.series[0].data.length; i++) {
+            if (tid == chart.series[0].data[i].id) {
+                chart.series[0].data[i].setState('select');
+            }
+            else {
+                chart.series[0].data[i].setState();
+            }
+        }
+    }
+}
+
+function onPointMouseOut() {
+    for (var c = 0; c < containers.length; c++) {
+        var chart = $('#'+containers[c]).highcharts();
+        for (var i = 0; i < chart.series[0].data.length; i++) {
+            chart.series[0].data[i].setState();
+        }
+    }
+}
 
 chart = {
     initScatterPlotForGcVsTpm: function(id, title, data) {
@@ -52,6 +77,12 @@ chart = {
                     events: {
                         click: function (e) {
                             window.open("http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t="+this.id,"_blank")
+                        },
+                        mouseOver: function (e) {
+                            onPointMouseOver(id, this.id);
+                        },
+                        mouseOut: function (e) {
+                            onPointMouseOut();
                         }
                     }
                 },
@@ -127,6 +158,12 @@ chart = {
                     events: {
                         click: function (e) {
                             window.open("http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t="+this.id,"_blank")
+                        },
+                        mouseOver: function (e) {
+                            onPointMouseOver(id, this.id);
+                        },
+                        mouseOut: function (e) {
+                            onPointMouseOut();
                         }
                     }
                 },
