@@ -134,7 +134,6 @@
             }
         }
         function getTids() {
-            // var searchTerm = document.getElementById('search').value;
             var searchTerm = 1
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", "/tids", true);
@@ -152,7 +151,6 @@
             xhttp.send();
         }
         function getData() {
-            // var searchTerm = document.getElementById('search').value;
             var searchTerm = 1
             var xhttp = new XMLHttpRequest();
             var tids = ""; 
@@ -160,16 +158,21 @@
 
             for(var i=0; inputElements[i]; ++i){
                   if(inputElements[i].checked){
-                    tids = tids + "tid="+inputElements[i].value+"&"
+                    tids = tids + "tid="+inputElements[i].value+"&";
                   }
             }
-            
+
+            if (tids == "") {
+                for(var i=0; i < 3; ++i){
+                    tids = "tid=ENST00000335137&tid=ENST00000306256&tid=ENST00000338660";
+                }                
+            }
             xhttp.open("GET", "/sync?"+tids, true);
             xhttp.onreadystatechange = function() {
               if (xhttp.readyState == 4 && xhttp.status == 200) {
                 if(xhttp.responseText != "") {
                     var obj = JSON.parse(xhttp.responseText);
-                    chart.initSyncChart();
+                    chart.initSyncChart(obj);
                 } else {
                 }
               }

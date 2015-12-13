@@ -1,4 +1,5 @@
 type = ['','info','success','warning','danger'];
+
 containers = ['kallisto_gcVsTpm', 'kallisto_lenVsTpm', 'rsem_gcVsTpm', 'rsem_lenVsTpm', 'sailfish_gcVsTpm', 'sailfish_lenVsTpm']
 function onPointMouseOver(chartId, tid) {
     for (var c = 0; c < containers.length; c++) {
@@ -286,27 +287,38 @@ chart = {
           });
       });
     },
-    initSyncChart: function () {
-    $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=activity.json&callback=?', function (activity) {
-        $.each(activity.datasets, function (i, dataset) {
-
-            // Add X values
-            dataset.data = Highcharts.map(dataset.data, function (val, j) {
-                return [activity.xData[j], val];
-            });
-
+    initSyncChart: function (data) {
+        document.getElementById('syncCharts').innerHTML='';
+        for (var key in data){
+            console.log(JSON.stringify(data[key]));
+            var experiment = data[key];
+            var series = []
+            for (var tid in experiment) {
+                tids = experiment[tid]
+                for (i in tids) {
+                  date = new Date(Date.parse(tids[i][0]));
+                  tids[i][0] = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+                  console.log(tids[i][0]);
+                }
+                series.push({
+                    name:tid,
+                    data: tids
+                });
+            }  
             $('<div class="chart">')
                 .appendTo('#syncCharts')
                 .highcharts({
                     chart: {
-                        marginLeft: 40, // Keep all charts left aligned
+                        spacingLeft: 10,
+                        spacingRight: 50,
+                        marginLeft: 100, // Keep all charts left aligned
                         spacingTop: 20,
                         spacingBottom: 20,
                         zoomType: 'x',
                         type: 'spline'
                     },
                     title: {
-                        text: dataset.name,
+                        text: "Experiment #"+key,
                         align: 'left',
                         margin: 0,
                         x: 30
@@ -326,7 +338,7 @@ chart = {
                     },
                     yAxis: {
                         title: {
-                            text: 'Snow depth (m)'
+                            text: 'TPM'
                         },
                         min: 0
                     },
@@ -337,82 +349,10 @@ chart = {
                             }
                         }
                     },
-                    series: [{
-                        data: [
-                [Date.UTC(1970, 9, 21), 0],
-                [Date.UTC(1970, 10, 4), 0.28],
-                [Date.UTC(1970, 10, 9), 0.25],
-                [Date.UTC(1970, 10, 27), 0.2],
-                [Date.UTC(1970, 11, 2), 0.28],
-                [Date.UTC(1970, 11, 26), 0.28],
-                [Date.UTC(1970, 11, 29), 0.47],
-                [Date.UTC(1971, 0, 11), 0.79],
-                [Date.UTC(1971, 0, 26), 0.72],
-                [Date.UTC(1971, 1, 3), 1.02],
-                [Date.UTC(1971, 1, 11), 1.12],
-                [Date.UTC(1971, 1, 25), 1.2],
-                [Date.UTC(1971, 2, 11), 1.18],
-                [Date.UTC(1971, 3, 11), 1.19],
-                [Date.UTC(1971, 4, 1), 1.85],
-                [Date.UTC(1971, 4, 5), 2.22],
-                [Date.UTC(1971, 4, 19), 1.15],
-                [Date.UTC(1971, 5, 3), 0]
-            ]
-        }, {
-            name: 'Winter 2013-2014',
-            data: [
-                [Date.UTC(1970, 9, 29), 0],
-                [Date.UTC(1970, 10, 9), 0.4],
-                [Date.UTC(1970, 11, 1), 0.25],
-                [Date.UTC(1971, 0, 1), 1.66],
-                [Date.UTC(1971, 0, 10), 1.8],
-                [Date.UTC(1971, 1, 19), 1.76],
-                [Date.UTC(1971, 2, 25), 2.62],
-                [Date.UTC(1971, 3, 19), 2.41],
-                [Date.UTC(1971, 3, 30), 2.05],
-                [Date.UTC(1971, 4, 14), 1.7],
-                [Date.UTC(1971, 4, 24), 1.1],
-                [Date.UTC(1971, 5, 10), 0]
-            ]
-        }, {
-            name: 'Winter 2014-2015',
-            data: [
-                [Date.UTC(1970, 10, 25), 0],
-                [Date.UTC(1970, 11, 6), 0.25],
-                [Date.UTC(1970, 11, 20), 1.41],
-                [Date.UTC(1970, 11, 25), 1.64],
-                [Date.UTC(1971, 0, 4), 1.6],
-                [Date.UTC(1971, 0, 17), 2.55],
-                [Date.UTC(1971, 0, 24), 2.62],
-                [Date.UTC(1971, 1, 4), 2.5],
-                [Date.UTC(1971, 1, 14), 2.42],
-                [Date.UTC(1971, 2, 6), 2.74],
-                [Date.UTC(1971, 2, 14), 2.62],
-                [Date.UTC(1971, 2, 24), 2.6],
-                [Date.UTC(1971, 3, 2), 2.81],
-                [Date.UTC(1971, 3, 12), 2.63],
-                [Date.UTC(1971, 3, 28), 2.77],
-                [Date.UTC(1971, 4, 5), 2.68],
-                [Date.UTC(1971, 4, 10), 2.56],
-                [Date.UTC(1971, 4, 15), 2.39],
-                [Date.UTC(1971, 4, 20), 2.3],
-                [Date.UTC(1971, 5, 5), 2],
-                [Date.UTC(1971, 5, 10), 1.85],
-                [Date.UTC(1971, 5, 15), 1.49],
-                [Date.UTC(1971, 5, 23), 1.08]
-            ],
-                        name: dataset.name,
-                        type: dataset.type,
-                        // color: Highcharts.getOptions().colors[i],
-                        fillOpacity: 0.0,
-                        tooltip: {
-                            valueSuffix: ' ' + dataset.unit
-                        }
-                    }]
+                    series: series
                 }
         );
-        });
-    });
+}
 }
 
     

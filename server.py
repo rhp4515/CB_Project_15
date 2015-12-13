@@ -70,6 +70,7 @@ def get_metrics(table_name, offset):
 	except:  
 		traceback.print_exc()
 
+
 @app.route('/tids')
 def fetch_tids():
 	try:
@@ -103,6 +104,28 @@ def metrics():
 @app.route('/sync')
 def sync():
 	tids = request.args.getlist('tid')
+	if len(tids) == 0:
+		return json.dumps({})
+	try:
+		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
+		cur = conn.cursor()
+		cur.execute("select time, tid, tpm*1000000, attempt from differential where tid in ("+','.join("'"+tid+"'" for tid in tids)+") order by tid,attempt,time")
+		data = cur.fetchall()
+		cur.close()
+		conn.close()
+		data_dict = {}
+		for d in data:
+ 			d[0] = str(d[0])
+ 			if d[3] not in data_dict.keys():
+				data_dict[d[3]] = {}
+			if d[1] not in data_dict[d[3]].keys():
+				data_dict[d[3]][d[1]] = [[d[0],d[2]]]  
+			else:
+				data_dict[d[3]][d[1]].append([d[0],d[2]])
+		print json.dumps(data_dict)
+		return json.dumps(data_dict)
+	except:  
+		traceback.print_exc()
 	return json.dumps(tids)
 
 
