@@ -102,10 +102,10 @@ chart = {
                             window.open("http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t="+this.id,"_blank")
                         },
                         mouseOver: function (e) {
-                            onPointMouseOver(id, this.id);
+                            onPointMouseOver(id, this.id, 0);
                         },
                         mouseOut: function (e) {
-                            onPointMouseOut();
+                            onPointMouseOut(0);
                         }
                     }
                 },
@@ -183,10 +183,10 @@ chart = {
                             window.open("http://www.ensembl.org/Homo_sapiens/Transcript/Summary?t="+this.id,"_blank")
                         },
                         mouseOver: function (e) {
-                            onPointMouseOver(id, this.id);
+                            onPointMouseOver(id, this.id, 0);
                         },
                         mouseOut: function (e) {
-                            onPointMouseOut();
+                            onPointMouseOut(0);
                         }
                     }
                 },
