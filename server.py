@@ -111,6 +111,29 @@ def sync():
 	return json.dumps(tids)
 
 
+@app.route('/coefficients')
+def coefficient():
+	'''
+	tids = request.args.getlist('tid')
+	if len(tids) == 0:
+		return json.dumps({})
+	'''	
+	try:
+		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
+		cur = conn.cursor()
+		cur.execute("select experiment,pearsoncoeff,spearmancoeff,proportionality_correlation,mae,tp,fp from summary")
+		data = cur.fetchall()
+		cur.close()
+		conn.close()
+		#coeff_dict = {}
+		# for d in data:
+		# 	d[0] = str(d[0])
+		# 	coeff_dict[d[0]] = d[1:]
+		return json.dumps(data)
+	except:  
+		traceback.print_exc()
+	return json.dumps(tids)
+
 @app.route('/')
 def index():
 	return app.send_static_file('index.html')	
