@@ -31,7 +31,7 @@ def get_metrics(table_name, offset):
 	try:
 		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
 		cur = conn.cursor()
-		cur.execute("select t.tid, t.length, t.tpm, g.gc from "+table_name+ " t, gc_content g where t.tid=g.tid and t.tpm > 0 order by tid limit 100 offset "+offset)
+		cur.execute("select t.tid, t.length, t.tpm, g.gc from "+table_name+ " t, gc_content g where t.tid=g.tid order by tid limit 100 offset "+offset)
 		metrics = cur.fetchall()
 		cur.close()
 		conn.close()
