@@ -110,7 +110,6 @@ def sync():
 		traceback.print_exc()
 	return json.dumps(tids)
 
-
 @app.route('/coefficients')
 def coefficient():
 	'''
@@ -133,6 +132,48 @@ def coefficient():
 	except:  
 		traceback.print_exc()
 	return json.dumps(tids)
+
+def construct_query(table_name, start, length, direction, col):
+	query = "select tid, length, eff_length, est_count, tpm from "+table_name+" where tid ilike %s limit "+length+" offset "+start
+	print query
+	return query
+def get_table_data(exp_name, start, length, direction, col, query):
+	try:
+		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
+		
+		cur = conn.cursor()
+		qstr = construct_query(exp_name, start, length, direction, col)
+		format_qstr = '%'+query+'%'
+		cur.execute(qstr, (format_qstr,))
+		data = cur.fetchall()
+		cur.close()
+
+		cur = conn.cursor()
+		cur.execute('select count(*) from '+exp_name)
+		count = cur.fetchall()
+		cur.close()
+
+		cur = conn.cursor()
+		cur.execute('select count(*) from '+exp_name+' where tid ilike %s',(format_qstr,))
+		filteredCount = cur.fetchall()
+		cur.close()
+		
+		conn.close()
+		dataList = list(data)
+		return {'recordsTotal':count[0][0],'recordsFiltered':filteredCount[0][0],'data':dataList}
+	except:  
+		traceback.print_exc()
+@app.route('/table')
+def load_table():
+	start = request.args.get('start')
+	length = request.args.get('length')
+	direction = request.args.get('order[0][dir]')
+	col = request.args.get('order[0][column]')
+	query = request.args.get('search[value]')
+	
+	data = get_table_data('kallisto',start, length, direction, col, query)
+
+	return json.dumps(data)
 
 @app.route('/')
 def index():
