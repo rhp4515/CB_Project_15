@@ -77,7 +77,7 @@
             <div class="content">
                 <div class="col-md-12">
                     <div class="row" style="max-width:100%">
-		                    	<table id="coeff_table" class="display responsive " cellspacing="0"  style="min-height:38rem; width:100% ">
+		                    	<table id="coeff_table" class="display responsive hover" cellspacing="0"  style="min-height:18rem; width:100% ">
 											        <thead>
 											            <tr>
 											                <th>Experiment</th>
@@ -89,8 +89,7 @@
 											                <th>False Positive Rate</th>
 											            </tr>
 											        </thead>
-											        <tbody>            
-											            
+											        <tbody>            											            
 											        </tbody>
 		    					</table>
                     </div>                    
@@ -131,7 +130,11 @@
 	<script type="text/javascript">
     	$(document).ready(function(){
         	getData();
-            
+            $('#coeff_table tbody').on( 'mouseenter', 'td', function () {
+                var colIdx = $('#coeff_table').DataTable().cell(this).index().column;
+                $( $('#coeff_table').DataTable().cells().nodes() ).removeClass('highlight');
+                $( $('#coeff_table').DataTable().column( colIdx ).nodes() ).addClass('highlight');
+            });    
     	});
 
     	$('#example').DataTable( {
@@ -144,25 +147,7 @@
                 getData();
             }
         }
-        function getDatadfdsf() {
-            // var searchTerm = document.getElementById('search').value;
-            var searchTerm = 1
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "/user?id="+searchTerm, true);
-            xhttp.onreadystatechange = function() {
-              if (xhttp.readyState == 4 && xhttp.status == 200) {
-                if(xhttp.responseText != "") {
-                    var obj = JSON.parse(xhttp.responseText);
-                    chart.initBoxPlot(obj.box);
-                    chart.initSparkline(obj.box);
-                } 
-                else {
-                }
-              }
-            };
-            xhttp.send();
-        }
-
+        
         function getData(){
         	var xhttp = new XMLHttpRequest();
             xhttp.open("GET", "/coefficients", true);
@@ -187,6 +172,12 @@
             xhttp.send();	
         }
 
-	</script>    
+	</script>   
+
+    <style type="text/css">
+    td.highlight {
+        background-color: whitesmoke !important;
+    }
+  </style> 
 </html>
 
