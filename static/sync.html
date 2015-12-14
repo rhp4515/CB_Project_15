@@ -74,20 +74,28 @@
         <div class="main-panel">
             <div class="content">
                 <div class="container-fluid">
-                    <div class="row col-lg-4">
-                            <div class="button-group col-lg-2 ">
+                    <div class="row col-lg-12">
+                            <div class="button-group col-lg-2">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Transcripts
                                 <span class="caret"></span></button>
                                 <ul id="options" class="dropdown-menu"></ul>
                             </div>  
-                            <div class="dropdown col-lg-2 col-lg-offset-3">
+                            <div class="dropdown col-lg-1">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button" onclick="getData();">Plot</button>
+                                    <button class="btn btn-primary" type="button" onclick="getData('');">Plot</button>
                                 </span>
-                            </div>  
+                            </div> 
+                            <div class="col-lg-9">
+                                <div class="input-group">
+                                  <input id="tids" type="text" class="form-control" placeholder="TIDs Comma Separated. Ex: TID1,TID2,TID3">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button" onclick="getDataWithCSV();">Plot with CSV</button>
+                                  </span>
+                                </div>
+                            </div>
                             </br>
                     </div>
-                    </br>
+                    <div class="row"></div>
                     </br>
                     <div class="row">
                         <div id="syncCharts"></div>
@@ -125,7 +133,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
             getTids();
-            getData();
+            getData('');
             
         });
         function checkKeyPress(e) {
@@ -150,22 +158,29 @@
             };
             xhttp.send();
         }
-        function getData() {
-            var searchTerm = 1
+        function getDataWithCSV() {
+            tidStr = document.getElementById('tids').value;
+            alert(tidStr);
+            tids = "tid="+tidStr.split(",").join("&tid=");
+            getData(tids);
+        }
+        function getData(tids) {
             var xhttp = new XMLHttpRequest();
-            var tids = ""; 
-            var inputElements = document.getElementsByClassName('tidOptions');
+            if (tids=='') {
+                var tids = ""; 
+                var inputElements = document.getElementsByClassName('tidOptions');
 
-            for(var i=0; inputElements[i]; ++i){
-                  if(inputElements[i].checked){
-                    tids = tids + "tid="+inputElements[i].value+"&";
-                  }
-            }
+                for(var i=0; inputElements[i]; ++i){
+                      if(inputElements[i].checked){
+                        tids = tids + "tid="+inputElements[i].value+"&";
+                      }
+                }
 
-            if (tids == "") {
-                for(var i=0; i < 3; ++i){
-                    tids = "tid=ENST00000335137&tid=ENST00000306256&tid=ENST00000338660";
-                }                
+                if (tids == "") {
+                    for(var i=0; i < 3; ++i){
+                        tids = "tid=ENST00000335137&tid=ENST00000306256&tid=ENST00000338660";
+                    }                
+                }
             }
             xhttp.open("GET", "/sync?"+tids, true);
             xhttp.onreadystatechange = function() {
