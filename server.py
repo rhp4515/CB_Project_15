@@ -46,8 +46,8 @@ def get_metrics(table_name, offset):
 			
 		metricDict['gcTPM'] = gcTPM
 		metricDict['lenTPM'] = lenTPM	
-		print "length of gcTPM", len(gcTPM)
-		print "length of lenTPM", len(lenTPM)
+		# print "length of gcTPM", len(gcTPM)
+		# print "length of lenTPM", len(lenTPM)
 		return metricDict
 	except:  
 		traceback.print_exc()
@@ -64,7 +64,7 @@ def fetch_tids():
 		conn.close()
 		tids_dict ={}
 		tids_dict['tids'] = [tid[0] for tid in tids]
-		print tids_dict
+		# print tids_dict
 		return json.dumps(tids_dict)
 	except:  
 		traceback.print_exc()
@@ -104,7 +104,7 @@ def sync():
 				data_dict[d[3]][d[1]] = [[d[0],d[2]]]  
 			else:
 				data_dict[d[3]][d[1]].append([d[0],d[2]])
-		print json.dumps(data_dict)
+		# print json.dumps(data_dict)
 		return json.dumps(data_dict)
 	except:  
 		traceback.print_exc()
@@ -112,11 +112,6 @@ def sync():
 
 @app.route('/coefficients')
 def coefficient():
-	'''
-	tids = request.args.getlist('tid')
-	if len(tids) == 0:
-		return json.dumps({})
-	'''	
 	try:
 		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
 		cur = conn.cursor()
@@ -124,19 +119,23 @@ def coefficient():
 		data = cur.fetchall()
 		cur.close()
 		conn.close()
-		#coeff_dict = {}
-		# for d in data:
-		# 	d[0] = str(d[0])
-		# 	coeff_dict[d[0]] = d[1:]
 		return json.dumps(data)
 	except:  
 		traceback.print_exc()
 	return json.dumps(tids)
 
 def construct_query(table_name, start, length, direction, col):
-	query = "select tid, length, eff_length, est_count, tpm from "+table_name+" where tid ilike %s limit "+length+" offset "+start
-	print query
+	exp_dict = {
+		"kallisto": ['tid', 'length', 'eff_length', 'est_count', 'tpm'],
+		"rsem": ['tid', 'gene_id', 'length', 'eff_length', 'est_count', 'tpm', 'fpkm', 'isopct'],
+		"sailfish": ['tid', 'length', 'tpm', 'num_reads']
+	}
+	col_names = ', '.join(exp_dict[table_name])
+	# print col_names
+	query = "select " + col_names +" from "+table_name+" where tid ilike %s order by "+ exp_dict[table_name][int(col)]+" "+direction+" limit "+length+" offset "+start
+	# print query
 	return query
+
 def get_table_data(exp_name, start, length, direction, col, query):
 	try:
 		conn = pg8000.connect(user="postgres", password="forgotpassword", database="cb15rna", host="cb15rna.ciacashmbpf0.us-east-1.rds.amazonaws.com")
@@ -163,6 +162,7 @@ def get_table_data(exp_name, start, length, direction, col, query):
 		return {'recordsTotal':count[0][0],'recordsFiltered':filteredCount[0][0],'data':dataList}
 	except:  
 		traceback.print_exc()
+
 @app.route('/table')
 def load_table():
 	start = request.args.get('start')
@@ -170,8 +170,9 @@ def load_table():
 	direction = request.args.get('order[0][dir]')
 	col = request.args.get('order[0][column]')
 	query = request.args.get('search[value]')
+	exp_name = request.args.get('exp_name')
 	
-	data = get_table_data('kallisto',start, length, direction, col, query)
+	data = get_table_data(exp_name, start, length, direction, col, query)
 
 	return json.dumps(data)
 

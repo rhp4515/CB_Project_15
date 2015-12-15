@@ -56,6 +56,7 @@ $.fn.dataTable.pipeline = function ( opts ) {
  
             request.start = requestStart;
             request.length = requestLength*conf.pages;
+            request.exp_name = conf.exp_name
  
             // Provide the same `data` options as DataTables.
             if ( $.isFunction ( conf.data ) ) {
@@ -114,12 +115,33 @@ $.fn.dataTable.Api.register( 'clearPipeline()', function () {
 // DataTables initialisation
 //
 $(document).ready(function() {
-    $('#table').DataTable( {
+    $('#table_kallisto').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": $.fn.dataTable.pipeline( {
             url: '/table',
-            pages: 5
-        } )
-    } );
+            pages: 5,
+            exp_name: 'kallisto'
+        })
+    });
+
+    $('#table_rsem').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": $.fn.dataTable.pipeline( {
+            url: '/table',
+            pages: 5,
+            exp_name: 'rsem'
+        })
+    });
+
+    $('#table_sailfish').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": $.fn.dataTable.pipeline( {
+            url: '/table',
+            pages: 5,
+            exp_name: 'sailfish'
+        })
+    });
 } );

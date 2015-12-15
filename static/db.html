@@ -81,19 +81,58 @@
     </div>
         <div class="main-panel">
             <div class="content">
+                <!-- <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Experiment Name
+                  <span class="caret"></span></button>
+                  <ul id="exp_dropdown" class="dropdown-menu">
+                    <li><a href="#">Kallisto</a></li>
+                    <li><a href="#">Rsem</a></li>
+                    <li><a href="#">Sailfish</a></li>
+                  </ul>
+
+                </div> </br> -->
+                <select id="exp" class="col-md-4" onchange="switchTable();">
+                    <option value="kallisto">Kallisto</option>
+                    <option value="rsem">RSem</option>
+                    <option value="sailfish">Sailfish</option>
+                </select>
                 <div class="col-md-12">
                     <div class="row" style="max-width:100%">
-		                    	<table id="table" class="display responsive " cellspacing="0"  style="width:100% ">
-											        <thead>
-											            <tr>
-											                <th>TID</th>
-											                <th>Length</th>
-											                <th>Effective Length</th>
-											                <th>Estimated Count</th>
-											                <th>TPM</th>
-											            </tr>
-											        </thead>
+                                <table id="table_kallisto" class="display responsive " cellspacing="0"  style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>TID</th>
+                                        <th>Length</th>
+                                        <th>Effective Length</th>
+                                        <th>Estimated Count</th>
+                                        <th>TPM</th>
+                                    </tr>
+                                </thead>
+                                </table>
+		                    	<table id="table_rsem" class="display responsive " cellspacing="0"  style="width:100%;">
+							        <thead>
+							            <tr>
+                                            <th>TID</th>
+                                            <th>Gene ID</th>
+                                            <th>Length</th>
+                                            <th>Effective Length</th>
+                                            <th>Estimated Count</th>
+                                            <th>TPM</th>
+                                            <th>FKPM</th>
+                                            <th>IsoPct</th>   
+							            </tr>
+							        </thead>
 		    					</table>
+                                <table id="table_sailfish" class="display responsive " cellspacing="0"  style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>TID</th>
+                                            <th>Length</th>
+                                            <th>TPM</th>
+                                            <th>Num Reads</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                     </div>                    
                 </div>    
             </div>    
@@ -132,12 +171,22 @@
 	
 	<script type="text/javascript">
     	$(document).ready(function(){
+            document.getElementById("table_rsem_wrapper").style.display = "none";
+            document.getElementById("table_sailfish_wrapper").style.display = "none";
     	});
 
         function checkKeyPress(e) {
             if (e.keyCode == 13) {
                 // getData();
             }
+        }
+
+        function switchTable() {
+            document.getElementById("table_kallisto_wrapper").style.display = "none";
+            document.getElementById("table_rsem_wrapper").style.display = "none";
+            document.getElementById("table_sailfish_wrapper").style.display = "none";
+            var exp = document.getElementById("exp").value;    
+            document.getElementById("table_"+exp+"_wrapper").style.display = "block";
         }
         // function getData() {
         //     // var searchTerm = document.getElementById('search').value;

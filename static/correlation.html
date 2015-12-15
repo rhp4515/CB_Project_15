@@ -160,7 +160,7 @@
               if (xhttp.readyState == 4 && xhttp.status == 200) {
                 if(xhttp.responseText != "") {
                     var obj = JSON.parse(xhttp.responseText);
-                    chart.initScatterPlotForExpFracVsTpm("kallisto_expFracVsTpm","Sailfish TPM Vs Truth Exp Frac",obj.kallisto_corr.corr);
+                    chart.initScatterPlotForExpFracVsTpm("kallisto_expFracVsTpm","Kallisto TPM Vs Truth Exp Frac",obj.kallisto_corr.corr);
                     chart.initScatterPlotForExpFracVsTpm("rsem_expFracVsTpm","RSem TPM Vs Truth Exp Frac",obj.rsem_corr.corr);
                     chart.initScatterPlotForExpFracVsTpm("sailfish_expFracVsTpm","Sailfish TPM Vs Truth Exp Frac",obj.sailfish_corr.corr);
                 } else {
