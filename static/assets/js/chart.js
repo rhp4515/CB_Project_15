@@ -318,7 +318,6 @@ chart = {
     initSyncChart: function (data) {
         document.getElementById('syncCharts').innerHTML='';
         for (var key in data){
-            console.log(JSON.stringify(data[key]));
             var experiment = data[key];
             var series = []
             for (var tid in experiment) {
@@ -326,7 +325,6 @@ chart = {
                 for (i in tids) {
                   date = new Date(Date.parse(tids[i][0]));
                   tids[i][0] = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),  date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
-                  console.log(tids[i][0]);
                 }
                 series.push({
                     name:tid,

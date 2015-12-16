@@ -49,31 +49,31 @@
                 <li>
                     <a href="/static/index.html">
                         <i class="pe-7s-graph"></i> 
-                        <p>Dashboard</p>
+                        <p>GCContent vs TPM</p>
                     </a>            
                 </li>
                 <li>
                     <a href="/static/correlation.html">
                         <i class="pe-7s-graph"></i> 
-                        <p>Correlation Dash</p>
+                        <p>TPM Correlation</p>
                     </a>            
                 </li>
                 <li>
                     <a href="/static/sync.html">
                         <i class="pe-7s-graph"></i> 
-                        <p>Synchronous Graph</p>
+                        <p>Differential Graph</p>
                     </a>            
                 </li>
                 <li>
                     <a href="/static/table.html">
                         <i class="pe-7s-graph"></i> 
-                        <p>Table View</p>
+                        <p>Coefficient Metrics</p>
                     </a>            
                 </li>
                 <li class="active">
                     <a href="/static/db.html">
                         <i class="pe-7s-graph"></i> 
-                        <p>DB Table View</p>
+                        <p>Table View</p>
                     </a>            
                 </li>
             </ul> 
@@ -81,16 +81,9 @@
     </div>
         <div class="main-panel">
             <div class="content">
-                <!-- <div class="dropdown">
-                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Experiment Name
-                  <span class="caret"></span></button>
-                  <ul id="exp_dropdown" class="dropdown-menu">
-                    <li><a href="#">Kallisto</a></li>
-                    <li><a href="#">Rsem</a></li>
-                    <li><a href="#">Sailfish</a></li>
-                  </ul>
-
-                </div> </br> -->
+                <div class="row" style="max-width:100%">
+                        <h2 align="center">Experiment Data</h2>
+                    </div>
                 <select id="exp" class="col-md-4" onchange="switchTable();">
                     <option value="kallisto">Kallisto</option>
                     <option value="rsem">RSem</option>
