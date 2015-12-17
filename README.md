@@ -26,8 +26,9 @@ http://www.postgresql.org/download/
 ##### pg8000 python-postgreSQL driver
 https://pypi.python.org/pypi/pg8000
 
-###### Use the `cb_psql_cmds.txt` file to create database tables and import the experiment
-###### Use the files in the `scripts/` folder to convert, compute and store the results into the database
+###### Use the `cb_psql_cmds.txt` file to create database tables and import the experiment.
+###### The code should be modified to point to the local database. This code change should be done in corecoeff.py and server.py.
+###### Use the files in the `scripts/` folder to convert, compute and store the results into the database. 
 * `fasta_parser.py`
 * `corelcoeff.py`
 

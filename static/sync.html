@@ -166,7 +166,6 @@
         }
         function getDataWithCSV() {
             tidStr = document.getElementById('tids').value;
-            alert(tidStr);
             tids = "tid="+tidStr.split(",").join("&tid=");
             getData(tids);
         }
